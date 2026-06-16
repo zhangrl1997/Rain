@@ -1,33 +1,62 @@
 # Research Methodology — 研究方法论卡片系统
 
-一张卡一个步骤，不迷路。从立项到出报告，7~8张卡带你走完行业研究或公司研究的全流程。
+行业研究和公司研究方法论卡片系统。每次只加载当前步骤所需指令，避免上下文稀释。
 
-## 两条路线
-
-| 路线 | 几张卡 | 干什么 |
-|:----|:------|:-------|
-| **行业研究** | 7张 | 市场结构 → 价值链 → 区域对比 → 竞品图谱 → 趋势风险 → 终稿 |
-| **公司研究** | 8张 | 商业模式 → 产品客户 → 产业链 → 竞争格局 → 财务模型 → 终稿 |
-
-每走几步有个**检查点**，帮你停下来想想方向对不对，免得一路偏到沟里。
-
-## 卡怎么走
+## 目录结构
 
 ```
-Card 0 → Card 1 → 🛑 检查点① → Card 2 → Card 3 → 🛑 检查点②
-→ Card 4 → Card 5 → 🛑 检查点③ → Card 6 → ✅ 完成
+research-methodology/
+├── SKILL.md                 # 主入口
+├── cards/                   # 卡片指令集
+│   ├── industry/            # 行业研究（7 张卡）
+│   └── company/             # 公司研究（8 张卡）
+└── references/              # 方法论文档 + 工具脚本
+    ├── industry.md
+    ├── company.md
+    ├── workflow.md
+    ├── reference-pretreat.md
+    └── scripts/
+        ├── extract_text.py  # 文档全文提取工具
+        └── check.sh         # 卡内完整性校验脚本
 ```
 
-每张卡都告诉你：该读什么、该写什么、写好了放在哪。
+## 工作流
 
-## 需要什么
+每张卡完成后执行三层校验方可继续：
 
-- Claude Code
-- 一个你想搞明白的行业或公司
-- 大概 2-6 个小时（看多深）
+1. **自动化校验**（`bash references/scripts/check.sh`）— 检查 [N] 引用、URL 完整性、编号连续性
+2. **关键数据核验** — 选 3-5 个核心数据/假设逐一独立搜索验证
+3. **卡内完整性自查** — 7 项手动确认
 
-## 更多
+## 使用方式
 
-- 详细卡片指令：`cards/industry/` 和 `cards/company/`
-- 方法论文档：`references/industry.md`、`references/company.md`
-- 质量检查：`references/scripts/check.sh`
+触发 `research-methodology` skill 后，系统自动判断模式并引导逐卡推进：
+
+```
+用户 → "研究一下光伏行业"
+     → 主 skill 触发 → 判断为行业研究
+     → 加载 Card 0 Setup → 建文件夹/读方法论/定范围
+     → Card 1 Ch1-2 → 检索→写作→校验→检查点
+     → 依次推进至 Finalize
+```
+
+每完成 3 张内容卡执行一次检查点（方向验证）。
+
+## 卡片定义
+
+| 模式 | 卡数 | 结构 |
+|------|------|------|
+| 行业研究 | 7 张 | Setup → Ch1-2 → Ch3-4 → Ch5-6 → Ch7-8 → Ch9-10 → Finalize |
+| 公司研究 | 8 张 | Setup → Ch1-3 → Ch4-5 → Ch6-7 → Ch8-9 → Ch10-11 → 财务模型 → Finalize |
+
+## 前置条件
+
+```bash
+pip3 install pypdf python-docx openpyxl
+```
+
+## 安全说明
+
+- 所有路径使用相对引用，无硬编码绝对路径
+- 部署脚本内置备份机制（首次覆盖前自动备份）
+- 无密钥/Token 硬编码
