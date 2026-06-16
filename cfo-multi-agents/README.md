@@ -1,72 +1,37 @@
-# CFO Multi-Agents Methodology
+# CFO Multi-Agents — 多Agent协同研究方法论
 
-A standardized multi-agent collaborative research workflow designed for CFO offices — enabling parallel research, cross-review, debate, and report consolidation across multiple domain experts.
+拉一桌专业Agent，帮你把复杂研究拆成6步走：派活 → 编辑初审 → 交叉审核 → 辩论 → 修改 → 合稿。每一步都有检查清单，吵不拢的自动升级。
 
-> 中文版：[methodology.md](./methodology.md) 记录了完整的6阶段方法论和设计原理。本文档为技能说明。
+## 角色分工
 
-## Overview
+| 谁 | 干什么 | 配置文件 |
+|:---|:------|:---------|
+| **你（主控）** | 拆任务、派活、盯进度、最后合稿 | — |
+| **专业Agent × N** | 各自研究、互相审核、辩论、改稿 | `agents/<角色名>.md` |
+| **COO** | 方案能不能落地、案例对标、员工沟通 | `agents/COO.md` |
+| **编辑** | 格式/逻辑/数据/引用 — 三轮把关 | `agents/editor.md` |
 
-This skill orchestrates multiple specialized agents (legal counsel, tax advisor, auditor, investment banker, banker, COO, editor) through a structured 6-phase workflow:
+**交叉审核默认律师+COO**（法律框架 + 内部落地）。不审自己，A审B则B也审A。
 
-```
-Phase 1: Task Dispatch → Phase 2: Editor Review → Phase 3: Cross Review
-→ Phase 4: Debate → Phase 5: Revision → Phase 6: Consolidation
-```
+## 6步流程速览
 
-Each phase has built-in quality gates, automated checks, and escalation paths for disagreements.
+| 步 | 叫什么 | 干什么 | 关键纪律 |
+|----|--------|--------|---------|
+| 1 | **派活** | 建文件夹 → 配权限 → 审Agent设定 → 派Task | 约定统一法规版本 |
+| 2 | **编辑初审** | 每份报告出来立刻审 | **不得攒批** |
+| 3 | **交叉审核** | 律师+COO审所有人 → 意见落盘 → 被审方确认 | 接受项直接改，异议项进辩论 |
+| 4 | **辩论** | 收件箱对谈 | **不可跳过**。分歧升级→披露 |
+| 5 | **修改+终审** | 按P0→P1→P2修，改完即审 | 计算须标注中间步骤 |
+| 6 | **合稿** | 合稿 → 编辑复核 → `check.sh` | 引用完整性校验 |
 
-## Structure
+## 需要什么
 
-```
-cfo-multi-agents/
-├── SKILL.md                     # Skill entry point — workflow, templates, cheatsheet
-├── methodology.md               # Full methodology with principles and rationale
-├── README.md                    # This file
-├── agents/                      # Agent persona definitions
-│   ├── legal-counsel.md         # Legal counsel
-│   ├── tax-advisor.md           # Tax advisor
-│   ├── auditor.md               # Auditor
-│   ├── investment-banker.md     # Investment banker
-│   ├── banker.md                # Banker
-│   ├── COO.md                   # Chief Operating Officer
-│   └── editor.md                # Editor / quality reviewer
-└── references/                  # Supporting resources
-    ├── check.sh                 # Citation integrity checker
-    └── reference-rules.md       # Citation format specification
-```
+- Claude Code（有多Agent能力）
+- 把 `agents/` 目录放进项目里
+- `.claude/settings.json` 配好写入权限
 
-## Quick Start
+## 更多
 
-### Prerequisites
-
-- Claude Code with multi-agent capabilities
-- The `agents/` directory added to your Claude Code project
-
-### Workflow
-
-1. **SKILL.md** contains the complete actionable workflow (160+ lines). Load this when you need to run a multi-agent research project.
-2. **methodology.md** contains the full rationale (500+ lines). Read this when you need deeper context on why certain steps exist.
-3. **Agent files** are loaded per agent when dispatching tasks.
-
-### Key Principles
-
-| Principle | Rationale |
-|:----------|:----------|
-| 6-phase order is fixed | Cannot skip, merge, or reorder phases |
-| Editor review is async-per-report | Each report reviewed immediately upon delivery — no batching |
-| Debate is mandatory | Controller cannot admit guilt on behalf of the accused |
-| Cross-review opinions must be filed | Written to `cross-review/` directory before being forwarded to the reviewee |
-| Citation discipline | New references appended to the end, check.sh run after each section |
-
-## Features
-
-- **Role-based agents**: Each domain expert has a defined persona with core capabilities, input/output specs, and citation rules
-- **Default cross-reviewers**: Legal counsel + COO (legal framework + internal execution)
-- **Three-color fix priority**: 🔴 P0 (must fix) → 🟡 P1 (should fix) → 🟢 P2 (nice to fix)
-- **Debate escalation**: inbox conversation → consensus →分歧 disclosure → Task enforcement
-- **Editor triple gate**: initial review → per-report final review → merged report review
-- **Citation integrity**: `references/check.sh` validates [N] sequence continuity and bidirectional matching
-
-## License
-
-[MIT](LICENSE)
+- 完整方法论：`methodology.md`（517行，含设计原理和踩坑记录）
+- 引用校验：`bash references/check.sh <文件>`
+- 引用规则：`references/reference-rules.md`
