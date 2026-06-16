@@ -1,23 +1,30 @@
-# Research Methodology — 研究方法论卡片系统
+# Rain — Claude Code Skills Collection
 
-将单文件 skill 拆解为卡片序列（Card System），每次只加载当前步骤所需指令，通过文件系统传递状态，避免上下文稀释和规则混淆。
+Claude Code 技能集合，包含多个独立的方法论 skill。
 
-## 系统架构
+## 技能列表
+
+### research-methodology
+行业研究和公司研究方法论卡片系统。每次只加载当前步骤所需指令，避免上下文稀释。
 
 ```
 research-methodology/
-├── SKILL.md                 # 主 skill 分发器（唯一入口）
+├── SKILL.md                 # 主入口
 ├── cards/                   # 卡片指令集
 │   ├── industry/            # 行业研究（7 张卡）
-│   │   ├── card-0-setup.md
-│   │   ├── card-1-basics.md
-│   │   └── ...
 │   └── company/             # 公司研究（8 张卡）
-│       ├── card-0-setup.md
-│       └── ...
-└── references/              # 方法论文档 + 工具脚本
-    ├── industry.md
-    ├── company.md
+└── references/              # 方法论文档
+```
+
+### cfo-multi-agents
+多Agent协同研究方法论 — 多专业Agent并行研究、交叉审核、辩论、合稿的标准化工作流。
+
+```
+cfo-multi-agents/
+├── SKILL.md                 # 技能入口
+├── agents/                  # Agent 定义（7个角色）
+└── references/              # 校验脚本 + 引用规则
+```
     ├── workflow.md
     ├── reference-pretreat.md
     └── scripts/
